@@ -15,12 +15,6 @@ void ATankPlayerController::BeginPlay() {
 	Super::BeginPlay();
 	
 	auto ControlledTank = GetControlledTank();
-	if (ControlledTank) {
-		UE_LOG(LogTemp, Warning, TEXT("You are posesing the tank %s"),*(ControlledTank->GetName()));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("chuj"));
-	}
 }
 
 ATank* ATankPlayerController::GetControlledTank() const {
@@ -34,8 +28,7 @@ void ATankPlayerController::AimTowardsCrosshair() {
 	FVector HitLocation; //Out Parameter
 
 	if (GetSightRayHitLocation(HitLocation)) {
-		UE_LOG(LogTemp, Warning, TEXT("Look direction: %s"), *(HitLocation.ToString()))
-			GetControlledTank()->AimAt(HitLocation);
+		GetControlledTank()->AimAt(HitLocation);
 	}
 }
 

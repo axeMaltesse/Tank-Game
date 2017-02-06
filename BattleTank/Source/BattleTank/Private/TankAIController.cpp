@@ -7,10 +7,7 @@ void ATankAIController::BeginPlay() {
 	Super::BeginPlay();
 
 	auto PlayerTank = GetPlayerTank();
-	if (PlayerTank) {
-		UE_LOG(LogTemp, Warning, TEXT("AI can find the player %s"), *(PlayerTank->GetName()))
-	}
-	else {
+	if (!PlayerTank) {
 		UE_LOG(LogTemp, Error, TEXT("Null pointer at GetPlayerTank method inside TankAIController.cpp"))
 	}
 }

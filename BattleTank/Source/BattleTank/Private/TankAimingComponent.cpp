@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
 
@@ -14,7 +15,7 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet) {
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet) {
 	Barrel = BarrelToSet;
 }
 
@@ -38,7 +39,7 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 
-	if (!Barrel) { return; }
+	if (!Barrel) {UE_LOG(LogTemp,Warning,TEXT("Barrel = nullptr")) return; }
 
 	FVector OutLaunchVelocity;
 	FVector EndLocation;
@@ -46,26 +47,45 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 
 	//Calculate out launch velocity
 
-	if (UGameplayStatics::SuggestProjectileVelocity(
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
+	(
 		this,
 		OutLaunchVelocity,
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
 		false,
-		0.0F,
-		0.0F,
-		ESuggestProjVelocityTraceOption::DoNotTrace,
-		FCollisionResponseParams::DefaultResponseParam,
-		TArray<AActor*>(),
-		false
-	)
-		)
-	{
+		0,
+		0,
+		ESuggestProjVelocityTraceOption::DoNotTrace
+	);
+
+	if (bHaveAimSolution){
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("Aiming At %s"), *AimDirection.ToString())
+		//TODO add SetTurretReference
+		MoveBarrelTowards(AimDirection);
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("Aim Solution Found : %f"), Time)
 	}
 	else {
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("No Aim Soltion Found : %f"), Time)
+
 		return;
 	}
+}
+
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	// Get the aim direction coordinates
+	//work out between current barrel reaction and AimDirection
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	Barrel->Elevate(5); //TODO remove magic number
+
+	// if coordinates < max wychylenie
+		//move barrel
+	// else
+		// set up barrel to max coordinates
 }
