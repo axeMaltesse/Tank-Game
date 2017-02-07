@@ -19,5 +19,6 @@ public:
 private:
 	float RotationSpeed;
 	
-	float MaxDegreesPerSecond = 15;
+	UPROPERTY(EditAnywhere, Category = Setup)
+		float MaxDegreesPerSecond = 25;
 };
