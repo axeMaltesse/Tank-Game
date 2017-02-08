@@ -47,4 +47,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 		TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UTankBarrel* Barrel = nullptr; //Local barrel Reference for spawning projectile
 };
