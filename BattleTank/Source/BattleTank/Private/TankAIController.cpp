@@ -6,35 +6,21 @@
 void ATankAIController::BeginPlay() {
 	Super::BeginPlay();
 
-	auto PlayerTank = GetPlayerTank();
-	if (!PlayerTank) {
-		UE_LOG(LogTemp, Error, TEXT("Null pointer at GetPlayerTank method inside TankAIController.cpp"))
-	}
 }
 
 void ATankAIController::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	auto PlayerTankLoation = GetPlayerTank()->GetActorLocation();
-	if (GetPlayerTank()) {
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto ControlledTank = Cast<ATank>(GetPawn());
+
+	if (PlayerTank) {
 		//TODO Move forwards to player direction
 
 		//Aim towards the player
-		GetTankAIController()->AimAt(PlayerTankLoation);
-
+		ControlledTank->AimAt(PlayerTank->GetActorLocation());
+		
 		//TODO Fire if ready
+		ControlledTank->Fire();//TODO limit firing rate
 	}
-}
-
-ATank * ATankAIController::GetTankAIController() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
-ATank * ATankAIController::GetPlayerTank() const
-{
-	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-
-	if (PlayerTank) {return Cast<ATank>(PlayerTank);}
-	else {return nullptr;}
 }

@@ -19,8 +19,4 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-		
-	ATank* GetTankAIController() const;
-
-	ATank* GetPlayerTank() const;
 };
