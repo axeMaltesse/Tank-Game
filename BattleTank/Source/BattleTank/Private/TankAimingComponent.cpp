@@ -41,8 +41,8 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 
-	if (!Barrel) { UE_LOG(LogTemp, Error, TEXT("Barrel = nullptr")) return; }
-	if (!Turret) { UE_LOG(LogTemp, Error, TEXT("Turret = nullptr")) return; }
+	if (!ensure(Barrel)) { UE_LOG(LogTemp, Error, TEXT("Barrel = nullptr")) return; }
+	if (!ensure(Turret)) { UE_LOG(LogTemp, Error, TEXT("Turret = nullptr")) return; }
 
 	FVector OutLaunchVelocity;
 	FVector EndLocation;
