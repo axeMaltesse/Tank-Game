@@ -27,6 +27,8 @@ protected:
 		UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
+
+	virtual void BeginPlay() override;
 	// Sets default values for this pawn's properties
 	ATank();	
 	
