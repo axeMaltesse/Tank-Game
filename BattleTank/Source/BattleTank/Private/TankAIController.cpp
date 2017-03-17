@@ -2,27 +2,25 @@
 
 #include "BattleTank.h"
 #include "TankAIController.h"
+#include "TankAimingComponent.h"
 
-void ATankAIController::BeginPlay() {
-	Super::BeginPlay();
-
-}
 
 void ATankAIController::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto ControlledTank = Cast<ATank>(GetPawn());
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto ControlledTank = GetPawn();
+	UE_LOG(LogTemp,Warning,TEXT("chujoza"))
+	if (!ensure(PlayerTank && ControlledTank)) { return; }
 
-	if (PlayerTank) {
-		//Move forwards to player direction
-		MoveToActor(PlayerTank, AcceptanceRadius); //TODO check radius
-		//Aim towards the player
-		ControlledTank->AimAt(PlayerTank->GetActorLocation());
+	// Move towards the player
+	MoveToActor(PlayerTank, AcceptanceRadius); // TODO check radius is in cm
+	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>(); // Aim towards the player
+	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 		
-		//TODO Fire if ready
-		ControlledTank->Fire();//TODO limit firing rate
-	}
+	//TODO Fire if ready
+	//ControlledTank->Fire();//TODO fix firing
 }
+
 
 

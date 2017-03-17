@@ -2,7 +2,6 @@
 
 #include "BattleTank.h"
 #include "Tank.h"
-#include "TankAimingComponent.h"
 #include "TankTurret.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
@@ -19,19 +18,10 @@ void ATank::BeginPlay() {
 	Super::BeginPlay();
 	auto TankName = GetName();
 
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
-
-void ATank::AimAt(FVector HitLocation) {
-	//passing the reference to Tank Aiming component
-	if (!ensure(TankAimingComponent)) { return; }
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
 
 void ATank::Fire()
 {
-
 	if (!ensure(Barrel)) { return; }
 	float isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInseconds;
 
@@ -48,5 +38,4 @@ void ATank::Fire()
 
 		LastFireTime = FPlatformTime::Seconds();
 	}
-
 }
