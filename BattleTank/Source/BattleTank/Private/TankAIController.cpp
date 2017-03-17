@@ -10,7 +10,6 @@ void ATankAIController::Tick(float DeltaTime) {
 
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControlledTank = GetPawn();
-	UE_LOG(LogTemp,Warning,TEXT("chujoza"))
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 
 	// Move towards the player
@@ -19,8 +18,6 @@ void ATankAIController::Tick(float DeltaTime) {
 	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 		
 	//TODO Fire if ready
-	//ControlledTank->Fire();//TODO fix firing
+	AimingComponent->Fire();//TODO fix firing
 }
-
-
 
