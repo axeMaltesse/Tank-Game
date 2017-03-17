@@ -50,6 +50,7 @@ protected:
 
 
 private:
+
 	UTankBarrel* Barrel = nullptr;//Local barrel Reference for spawning projectile
 
 	UTankTurret* Turret = nullptr;
