@@ -10,6 +10,8 @@ void ATankAIController::Tick(float DeltaTime) {
 
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControlledTank = GetPawn();
+	UE_LOG(LogTemp, Warning, TEXT("Something to print"))
+
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 
 	// Move towards the player
@@ -20,4 +22,3 @@ void ATankAIController::Tick(float DeltaTime) {
 	//TODO Fire if ready
 	AimingComponent->Fire();//TODO fix firing
 }
-
