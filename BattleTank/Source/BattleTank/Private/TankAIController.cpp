@@ -10,7 +10,6 @@ void ATankAIController::Tick(float DeltaTime) {
 
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControlledTank = GetPawn();
-	UE_LOG(LogTemp, Warning, TEXT("Something to print"))
 
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 

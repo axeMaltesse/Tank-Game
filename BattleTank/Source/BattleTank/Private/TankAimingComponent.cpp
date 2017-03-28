@@ -27,7 +27,7 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	LastFireTime = FPlatformTime::Seconds();
 	
 }
 
@@ -37,7 +37,11 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// ...
+	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInseconds)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	// TODO Handleaiming and locking state
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation) {
@@ -91,9 +95,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	float isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInseconds;
-
-	if (isReloaded) {
+	if (FiringState != EFiringState::Reloading) {
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
 		//Spawn a projectile at the socket location
