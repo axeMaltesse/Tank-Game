@@ -48,8 +48,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 		UTankAimingComponent* TankAimingComponent = nullptr;
 
-
 private:
+
+	bool IsBarrelMoving();
 
 	UTankBarrel* Barrel = nullptr;//Local barrel Reference for spawning projectile
 
@@ -67,4 +68,5 @@ private:
 
 	double LastFireTime = 0;
 
+	FVector AimDirection;
 };
