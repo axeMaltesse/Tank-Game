@@ -50,7 +50,7 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 	}
 }
 
-bool UTankAimingComponent::IsBarrelMoving() 
+bool UTankAimingComponent::IsBarrelMoving()
 {
 	if (!ensure(Barrel)) { return false; }
 
@@ -94,13 +94,18 @@ void UTankAimingComponent::AimAt(FVector HitLocation) {
 	}
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+EFiringState UTankAimingComponent::GetFiringState() const
+{
+	return FiringState;
+}
+
+void UTankAimingComponent::MoveBarrelTowards(FVector aimDirection)
 {
 	if (!ensure(Barrel) || !ensure(Turret)) { return; }
 
 	//work out between current barrel reaction and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
+	auto AimAsRotator = aimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 	Barrel->Elevate(DeltaRotator.Pitch);
@@ -129,5 +134,13 @@ void UTankAimingComponent::Fire()
 		Projectile->LaunchProjectile(LaunchSpeed);
 
 		LastFireTime = FPlatformTime::Seconds();
+
+		Ammo--;
+		UE_LOG(LogTemp,Warning,TEXT("%i"),Ammo)
 	}
+}
+
+int UTankAimingComponent::AmmoCounter() const
+{
+	return Ammo;
 }
